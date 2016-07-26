@@ -29,20 +29,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(multer());
+var multer = require('multer');
+var upload = multer({ dest: './uploads' });
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('login',routes);
 app.use('/home',routes);
 app.use('/logout',routes);
-
-app.use(session({ 
-    secret: 'secret',
-    cookie:{ 
-        maxAge: 1000*60*60;  //1 hour
-    }
-}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,6 +68,13 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+app.use(session({ 
+    secret: 'secret',
+    cookie:{ 
+        maxAge: 1000*60*60  //1 hour
+    }
+}));
 
 app.use(function(req, res, next){ 
     res.locals.user = req.session.user;   // get user from session

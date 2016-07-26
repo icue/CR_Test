@@ -6,37 +6,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title><%= title %></title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css" media="screen">
     <style type="text/css">
     .m15{ margin: 15px;}
      .tc{ text-align: center;font-size: 18px;font-weight: 600;}
     </style>
 </head>
 <body screen_capture_injected="true">
-    <div class="container">
-    <%- message %>
-        <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post" onsubmit="return false">
-            <fieldset>
-                <legend></legend>
-                <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p class="tc">Log in</p>
-                </div>
-                <div class="panel-body m15">
-                <span class="glyphicon glyphicon-user"></span>
-                </span>
-                <div>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block" id="login0">Log in</button>
-                </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+    <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post" onsubmit="return false">
+        <fieldset>
+            <legend></legend>
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                <p class="tc">Log in</p>
+            </div>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Your name" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="login0">Log in</button>
+            </div>
+            </div>
+        </fieldset>
+    </form>
 
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/bootstrap/dist/js//bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(function(){ 
         $("#login0").click(function(){ 
