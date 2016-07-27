@@ -34,10 +34,11 @@
     $(function(){ 
         $("#login0").click(function(){ 
             var username = $("#username").val();
+            var data = {"uname":username};
             $.ajax({ 
                 url:'/login',
                 type:'post',
-                data: username,
+                data: data,
                 success: function(data,status){ 
                     if(status == 'success'){ 
                         location.href = 'home';
