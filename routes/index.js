@@ -27,6 +27,7 @@ router.route("/login").get(function(req,res){
 	                    } else {
 	                        req.session.error = 'New user created.';
 	                        req.session.user = doc;
+	                        statusSwitch(uname);
 	                        res.send(200);
 	                    }
 	                  });
@@ -42,10 +43,21 @@ router.route("/login").get(function(req,res){
   //           	});
         }else{ 
             req.session.user = doc;
+            statusOnline(uname);
             res.send(200);
         }
     });
 });
+function statusOnline(uname){
+	var User = global.db_handle.getModel('user');
+	User.update({name:uname},{$set: {status: 'online'}},function(err,doc){
+		if(err){
+			console.log(err);
+		}else{
+			console.log(uname+ " logged in.");
+		}
+	});
+}
 
 /* GET home page. */
 router.get("/home",function(req,res){ 

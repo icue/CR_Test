@@ -13,6 +13,9 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+// var app = require('express')();
+// var server2 = require('http').Server(app);
+// var server = require('socket.io')(server2);
 
 global.db_handle = require('./database/db_handle');
 global.db = mongoose.connect("mongodb://localhost:27017/nodedb");
