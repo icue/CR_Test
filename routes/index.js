@@ -30,6 +30,16 @@ router.route("/login").get(function(req,res){
 	                        res.send(200);
 	                    }
 	                  });
+  //           	User.findOne({name:uname},function(err,doc){
+  //           		if(err){                                         //错误就返回给原post处（login.html) 状态码为500的错误
+		// 	            res.send(500);
+		// 	            console.log(err);
+		// 	        }else{
+  // //res.render('home', {user: req.session.user});
+		// 	        	req.session.user = doc;
+	 //                    res.send(200);
+		// 	        }
+  //           	});
         }else{ 
             req.session.user = doc;
             res.send(200);
@@ -43,7 +53,7 @@ router.get("/home",function(req,res){
         req.session.error = "Please log in."
         res.redirect("/login");
     }
-    res.render("home",{title:'Home'});
+    res.render("home",{title:'Home',user:req.session.user});
 });
 
 /* GET logout page. */
