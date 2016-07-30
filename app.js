@@ -35,7 +35,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(multer());
 
-app.use(session({ 
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
     secret: 'secret',
     cookie:{ 
         maxAge: 1000*60*60  //1 hour

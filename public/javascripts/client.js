@@ -117,18 +117,3 @@ socket.on("user_say",function(name,time,content){    // 获取用户的聊天信
 	var hei = msg_list.height();
 	msg_list.scrollTop(hei);
 });
-
-socket.on("sayToYou",function(fromuser,content){ 
-	var msg_list = $(".msg-list");
-		msg_list.append( 
-		'<div class="msg-wrap"><div class="msg-content msg-system">'+
-		'【'+fromuser+'】给你私信：'+content+'</div></div>'
-	);
-});
-socket.on("say_private_done",function(touser,content){ 
-	var msg_list = $(".msg-list");
-		msg_list.append( 
-		'<div class="msg-wrap"><div class="msg-content msg-system">'+
-		'你已经给【'+touser+'】发送了私信：'+content+'</div></div>'
-	);
-})

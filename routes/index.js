@@ -44,7 +44,7 @@ router.route("/login").get(function(req,res){
         }else{ 
             req.session.user = doc;
             statusOnline(uname);
-            res.send(200);
+            res.sendStatus(200);
         }
     });
 });
