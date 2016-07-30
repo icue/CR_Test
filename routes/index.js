@@ -27,7 +27,7 @@ router.route("/login").get(function(req,res){
 	                    } else {
 	                        req.session.error = 'New user created.';
 	                        req.session.user = doc;
-	                        statusSwitch(uname);
+	                        statusOnline(uname);
 	                        res.send(200);
 	                    }
 	                  });

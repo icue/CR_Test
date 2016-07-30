@@ -1,12 +1,5 @@
+var socket = io.connect();
 
-var socket = io.connect('http://localhost');
-function wrapInfo(){   // 点击个人信息时方框外围
-	$(".myInfo").addClass("wrapIt");
-	var t = setTimeout(function(){ 
-		$(".myInfo").removeClass("wrapIt");
-	},1500);
-	//clearTimeout(t);
-}
 function keySend(event){    // ctrl + enter  sendMessage
 	if(event.ctrlKey && event.keyCode == 13){ 
 		sendMyMessage();
@@ -14,8 +7,8 @@ function keySend(event){    // ctrl + enter  sendMessage
 }
 function sendMyMessage(){     // 发送消息 -- 处理
 	var content = $("#msgIn").val();   //获取消息框数据
-	
-	if(content == ""){ 
+
+	if(content == ""){
 		return;
 	}
 	if(content.substring(0,1) === '@' && content.indexOf(':') != -1){   //private message  format:  @user:
@@ -26,7 +19,7 @@ function sendMyMessage(){     // 发送消息 -- 处理
 		var fromuser = $("#nickname span").html();
 	//	alert(touser+"   "+content1);
 		socket.emit("say_private",fromuser,touser,content1);    //私聊
-		}else{ 
+		}else{
 			socket.emit("say",content);   // 正常群聊 给服务器提交数据 提供处理
 		}
 	}else{
@@ -37,21 +30,6 @@ function sendMyMessage(){     // 发送消息 -- 处理
 function ensure(){ 
    $("#chat-modal").modal("hide");
 }
-
-// quick-input
-$(function(){  
-	var T = setInterval(function(){ 
-		var date = new Date();
-	       var time = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-		$(".tip span").html(time);
-	},1000);
-	
-	
-	$(".quick-menu").on("click",function(event){   // 快捷信息拉取
-		/* Act on the event */
-		$("#msgIn").val($(event.target).text().substr(4));
-	});
-}); 
 
 function showChatMsgs(){     // 获取聊天记录
    $("#chat-modal").modal("show");
@@ -71,21 +49,21 @@ socket.on("connect",function(){   // 进入聊天室
 	console.log("send userName to server completed");
 });
 
-socket.on("userIn",function(data){ 
+socket.on("userIn",function(data){
 	var msg_list = $(".msg-list");
-		msg_list.append( 
+		msg_list.append(
 		'<div class="msg-wrap"><div class="msg-content msg-system">'+data+'</div></div>'
 	);
 });
-socket.on("userOut",function(data){ 
+socket.on("userOut",function(data){
 	var msg_list = $(".msg-list");
-		msg_list.append( 
+		msg_list.append(
 		'<div class="msg-wrap"><div class="msg-content msg-system">'+data+'</div></div>'
 	);
 });
-socket.on("system",function(data){ 
+socket.on("system",function(data){
 	var msg_list = $(".msg-list");
-		msg_list.append( 
+		msg_list.append(
 		'<div class="msg-wrap"><div class="msg-content msg-welcome">'+data+'</div></div>'
 	);
 });
@@ -109,7 +87,7 @@ socket.on("user_list",function(userList){    // 获取用户列表并展示
 socket.on("user_say",function(name,time,content){    // 获取用户的聊天信息并显示于面板
 	console.log("client:  "+name + "say :  "+content);
 	var msg_list = $(".msg-list");
-	msg_list.append( 
+	msg_list.append(
 		'<div class="msg-wrap"><div class="msg-info"><span class="msg-name" title="点此用户 可与其私聊哦~" onclick="toUser(this)">'+name+' </span>'+
 		'<span class="msg-time">'+time+' </span><span class="glyphicon glyphicon-bullhorn"></span></div>'+
 		'<div class="msg-content">'+content+'</div></div>'
