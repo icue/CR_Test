@@ -66,7 +66,7 @@ socket.on('say',function(content){         // 群聊阶段
 
 	socket.on("getChatList",function(uname){    //获取客户端用户名并从数据库拉取 聊天记录
 		var Content =global.db_handle.getModel('content');
-		Content.find({name: uname},function(err,docs){ 
+		Content.find({},function(err,docs){ 
 			if(err){ 
 				console.log(err);
 			}else{     // 将docs 聊天记录返回给客户端处理

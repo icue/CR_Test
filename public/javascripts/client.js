@@ -7,24 +7,10 @@ function keySend(event){    // ctrl + enter  sendMessage
 }
 function sendMyMessage(){     // 发送消息 -- 处理
 	var content = $("#msgIn").val();   //获取消息框数据
-
 	if(content == ""){
 		return;
 	}
-	if(content.substring(0,1) === '@' && content.indexOf(':') != -1){   //private message  format:  @user:
-		var index = content.indexOf(':');
-		if(content[index-1] != " "){
-		var touser = content.substring(1,index);  //userName
-		var content1 = content.substr(index+1);
-		var fromuser = $("#nickname span").html();
-	//	alert(touser+"   "+content1);
-		socket.emit("say_private",fromuser,touser,content1);    //私聊
-		}else{
-			socket.emit("say",content);   // 正常群聊 给服务器提交数据 提供处理
-		}
-	}else{
 	socket.emit("say",content);   // 正常群聊 给服务器提交数据 提供处理
-	}
 	$("#msgIn").val("");              //消息框置空
 }
 function ensure(){ 
@@ -37,10 +23,20 @@ function showChatMsgs(){     // 获取聊天记录
 }
 socket.on("getChatListDone",function(datas){   //从服务器获取聊天记录
 	$(".chat-list").html("");
-	$(".chat-list").append("<tr class='row'><th class='col-sm-1'> ID </th><th class='col-sm-4'> Time </th><th class='col-sm-8'> Content </th></tr>");
+	//$(".chat-list").append("<div class='msg-wrap'><div class='msg-content'> ID  Time  Content </div></div>");
+	$(".chat-list").append("<div class='bubble-box'><table>");
 	for(var i=0;i<datas.length;i++){ 
-		$(".chat-list").append("<tr class='row'><td class='col-sm-1'>"+(i+1)+"</td><td class='col-sm-3'>"+datas[i].time+"</td><td class='col-sm-8'>"+datas[i].data+"</td></tr>");
+		$(".chat-list").append(
+			        "<tr>"+
+			          "<td class='bubble-name'>"+datas[i].name+"</td>"+
+			          "<td class='bubble-time'>"+datas[i].time+"</td>"+
+			        "</tr>"+
+			        "<tr>"+
+			          "<td class='bubble-content' colspan='2'>"+datas[i].data+"</td>" +
+			        "</tr>"
+			);
 	}
+	$(".chat-list").append("</table></div>");
 });
 
 socket.on("connect",function(){   // 进入聊天室
@@ -87,11 +83,21 @@ socket.on("user_list",function(userList){    // 获取用户列表并展示
 socket.on("user_say",function(name,time,content){    // 获取用户的聊天信息并显示于面板
 	console.log("client:  "+name + "say :  "+content);
 	var msg_list = $(".msg-list");
-	msg_list.append(
-		'<div class="msg-wrap"><div class="msg-info"><span class="msg-name" title="点此用户 可与其私聊哦~" onclick="toUser(this)">'+name+' </span>'+
-		'<span class="msg-time">'+time+' </span><span class="glyphicon glyphicon-bullhorn"></span></div>'+
-		'<div class="msg-content">'+content+'</div></div>'
-	);
+	// msg_list.append(
+	// 	'<div class="msg-wrap"><div class="msg-info"><span class="msg-name" title="点此用户 可与其私聊哦~" onclick="toUser(this)">'+name+' </span>'+
+	// 	'<span class="msg-time">'+time+' </span><span class="glyphicon glyphicon-bullhorn"></span></div>'+
+	// 	'<div class="msg-content">'+content+'</div></div>'
+	// );
+			msg_list.append("<div class='bubble-box'><table>"+
+			        "<tr>"+
+			          "<td class='bubble-name'>"+name+"</td>"+
+			          "<td class='bubble-time'>"+time+"</td>"+
+			        "</tr>"+
+			        "<tr>"+
+			          "<td class='bubble-content' colspan='2'>"+content+"</td>" +
+			        "</tr>"+
+			        "</table></div>"
+			);
 	var hei = msg_list.height();
 	msg_list.scrollTop(hei);
 });

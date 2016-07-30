@@ -1,10 +1,37 @@
 body {
   padding: 0 50px 50px 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
 }
 
-a {
+/*a {
   color: #00B7FF;
+}*/
+
+table{
+        width:100%;
+    }
+.bubble-box{
+	background:#EEE; 
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 12px;
+	padding: 10px;
+	color: #666666;
+}
+.bubble-name{
+	text-align:left;
+	font-family:Arial,sans-serif;
+	font-size: 25px;
+}
+.bubble-time{
+	text-align:right;
+	font-family:"Times New Roman",sans-serif;
+	font-size: 15px;
+}
+.bubble-content{
+	text-align:left;
+	font-family:sans-serif;
+	font-size: 20px;
 }
 
 .mt15{ margin-top: 15px;}
