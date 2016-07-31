@@ -53,19 +53,19 @@ socket.on("connect",function(){   // 进入聊天室
 socket.on("userIn",function(data){
 	var msg_list = $(".msg-list");
 		msg_list.append(
-		'<div class="msg-wrap"><div class="msg-content msg-system">'+data+'</div></div>'
+		'<div class="msg-wrap"><div class="bubble-box bubble-system">'+data+'</div></div>'
 	);
 });
 socket.on("userOut",function(data){
 	var msg_list = $(".msg-list");
 		msg_list.append(
-		'<div class="msg-wrap"><div class="msg-content msg-system">'+data+'</div></div>'
+		'<div class="msg-wrap"><div class="bubble-box bubble-system">'+data+'</div></div>'
 	);
 });
 socket.on("system",function(data){
 	var msg_list = $(".msg-list");
 		msg_list.append(
-		'<div class="msg-wrap"><div class="msg-content msg-welcome">'+data+'</div></div>'
+		'<div class="msg-wrap"><div class="bubble-box bubble-system">'+data+'</div></div>'
 	);
 });
 

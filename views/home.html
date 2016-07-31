@@ -2,33 +2,33 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1" >
-<title>小小小小在线聊天室(chat-room)</title>
+<title>Chatroom</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="stylesheets/chat.css">
 <body onload="showChatMsgs()">
   <div class="container">
     <div class="row mt15">
-    <!-- 聊天信息区 -->
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="msg-list" id="msg-list">
-            </div>
+      <a type="button" class="btn btn-danger pull-right" href="/logout">Logout</a>
+    </div>
+    <div class="row mt15">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="msg-list" id="msg-list">
           </div>
         </div>
-
-        <!-- 信息输入框 -->
-        <div class="input-group input-group-lg">
-          <h5 id="nickname">昵称： <span><%- user.name %></span></h5>
-
-          <input type="text" class="form-control" id="msgIn" placeholder="请输入聊天内容" onkeydown="keySend(event)">
-          <span class="input-group-btn">
-          <button type="button"class="btn btn-primary " onclick="sendMyMessage()">
-            发送
-            </button> 
-          </span>
-        </div>
+      </div>
+    </div>
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon" id="nickname"><span><%- user.name %></span>:</span>
+      <input type="text" class="form-control" id="msgIn" placeholder="Put message here" onkeydown="keySend(event)">
+      <span class="input-group-btn">
+        <button type="button"class="btn btn-primary " onclick="sendMyMessage()">
+          Send
+        </button> 
+      </span>
+    </div>
   </div>
 
   <script type="text/javascript" src="javascripts/jquery.min.js"></script>
