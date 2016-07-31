@@ -1,7 +1,7 @@
 var socket = io.connect();
 
-function keySend(event){    // ctrl + enter  sendMessage
-	if(event.ctrlKey && event.keyCode == 13){ 
+function keySend(event){    // enter  sendMessage
+	if(event.keyCode == 13){ 
 		sendMyMessage();
 	}
 }
@@ -18,25 +18,30 @@ function ensure(){
 }
 
 function showChatMsgs(){     // 获取聊天记录
-   $("#chat-modal").modal("show");
    socket.emit("getChatList",$("#nickname span").html());     // 将用户名提交给服务器
 }
+
 socket.on("getChatListDone",function(datas){   //从服务器获取聊天记录
-	$(".chat-list").html("");
+	//$(".chat-list").html("");
 	//$(".chat-list").append("<div class='msg-wrap'><div class='msg-content'> ID  Time  Content </div></div>");
-	$(".chat-list").append("<div class='bubble-box'><table>");
+
+	var msg_list = $(".msg-list");
 	for(var i=0;i<datas.length;i++){ 
-		$(".chat-list").append(
+		msg_list.append("<div class='bubble-box'><table>"+
 			        "<tr>"+
 			          "<td class='bubble-name'>"+datas[i].name+"</td>"+
 			          "<td class='bubble-time'>"+datas[i].time+"</td>"+
 			        "</tr>"+
 			        "<tr>"+
 			          "<td class='bubble-content' colspan='2'>"+datas[i].data+"</td>" +
-			        "</tr>"
+			        "</tr>"+
+			        "</table></div>"
 			);
 	}
-	$(".chat-list").append("</table></div>");
+	// 	var hei = msg_list.height();
+	// msg_list.scrollTop(hei);
+	var div = document.getElementById("msg-list");
+	div.scrollTop = div.scrollHeight;
 });
 
 socket.on("connect",function(){   // 进入聊天室
@@ -83,21 +88,20 @@ socket.on("user_list",function(userList){    // 获取用户列表并展示
 socket.on("user_say",function(name,time,content){    // 获取用户的聊天信息并显示于面板
 	console.log("client:  "+name + "say :  "+content);
 	var msg_list = $(".msg-list");
-	// msg_list.append(
-	// 	'<div class="msg-wrap"><div class="msg-info"><span class="msg-name" title="点此用户 可与其私聊哦~" onclick="toUser(this)">'+name+' </span>'+
-	// 	'<span class="msg-time">'+time+' </span><span class="glyphicon glyphicon-bullhorn"></span></div>'+
-	// 	'<div class="msg-content">'+content+'</div></div>'
-	// );
-			msg_list.append("<div class='bubble-box'><table>"+
-			        "<tr>"+
-			          "<td class='bubble-name'>"+name+"</td>"+
-			          "<td class='bubble-time'>"+time+"</td>"+
-			        "</tr>"+
-			        "<tr>"+
-			          "<td class='bubble-content' colspan='2'>"+content+"</td>" +
-			        "</tr>"+
-			        "</table></div>"
-			);
-	var hei = msg_list.height();
-	msg_list.scrollTop(hei);
+	msg_list.append("<div class='bubble-box'><table>"+
+	        "<tr>"+
+	          "<td class='bubble-name'>"+name+"</td>"+
+	          "<td class='bubble-time'>"+time+"</td>"+
+	        "</tr>"+
+	        "<tr>"+
+	          "<td class='bubble-content' colspan='2'>"+content+"</td>" +
+	        "</tr>"+
+	        "</table></div>"
+	);
+	var div = document.getElementById("msg-list");
+	div.scrollTop = div.scrollHeight;
+	 //div.scrollTop = div.scrollHeight - div.clientHeight;
+	// var div = $("#msg_list");
+	// var hei = div.offsetHeight();
+ //     div.scrollTop(hei);
 });

@@ -7,81 +7,21 @@
 <title>小小小小在线聊天室(chat-room)</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="stylesheets/chat.css">
-<body>
+<body onload="showChatMsgs()">
   <div class="container">
     <div class="row mt15">
-    <div class="col-sm-4">
-    <!--  个人信息区 -->
-      <div class="col-sm-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-          <div class="row">
-          <div class="col-sm-8">
-          </div>
-          <div class="col-sm-4">
-          <div class="btn-group">
-            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-            设置
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a onclick="showChatMsgs()">聊天记录</a></li>
-              <li><a href="/logout">退出</a></li>
-            </ul>
-          </div>
-          </div>
-          </div>
-        </div>
-          <div class="panel-body myInfo">
-              <h5 id="nickname">昵称： <span><%- user.name %></span></h5>
-          </div>
-        </div>
-      </div>
-    <!-- 用户列表 -->
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          在线用户
-        </div>
-        <div class="panel-body list-body">
-          <table class="table table-hover user-list">
-          <!--  <tr>
-              <td>user1</td>
-            </tr> -->
-          </table>
-        </div>
-        <div class="panel-footer" id="list-count">
-        <!--  当前在线：1人 -->
-        </div>
-      </div>
-    </div>
-    </div>
     <!-- 聊天信息区 -->
-      <div class="col-sm-8">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            聊天内容
-          </div>
           <div class="panel-body">
-            <div class="msg-list">
+            <div class="msg-list" id="msg-list">
             </div>
           </div>
         </div>
 
         <!-- 信息输入框 -->
         <div class="input-group input-group-lg">
-          <span class="input-group-btn dropup">
-            <button type="button"class="btn btn-info dropdown-toggle" data-toggle="dropdown" id="quick">快捷信息
-            <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu quick-menu">
-              <li> 1. Hello </li>
-              <li> 2. Hello World</li>
-              <li> 3. 求关照求关照</li>
-              <li> 4. 吃饭不 </li>
-              <li> 5. 天黑请睁眼 </li>
-            </ul>
-          </span>
+          <h5 id="nickname">昵称： <span><%- user.name %></span></h5>
+
           <input type="text" class="form-control" id="msgIn" placeholder="请输入聊天内容" onkeydown="keySend(event)">
           <span class="input-group-btn">
           <button type="button"class="btn btn-primary " onclick="sendMyMessage()">
@@ -89,36 +29,8 @@
             </button> 
           </span>
         </div>
-      </div>
-    </div>
   </div>
 
-  <!-- Modal  chat lists-->
-  <div class="modal fade" id="chat-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only"></span>
-          </button>
-          <h4 class="modal-title" id="myModal">您最近的聊天记录</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-              <table class="table table-hover chat-list">
-              <!--  <tr><td>2014/12/12</td><td>hehehhehehehheh</td></tr>
-                <tr><td>2014/12/12</td><td>afadsfasdfasdf</td></tr>
-                <tr><td>2014/12/12</td><td>hehsssssehhehehehheh</td></tr> -->
-              </table>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="ensure()">确认</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <script type="text/javascript" src="javascripts/jquery.min.js"></script>
   <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
