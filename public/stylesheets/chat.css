@@ -48,17 +48,20 @@ table{
 	margin-right: 0;
 }
 
-.mt15{ margin-top: 15px;}
+.mt10{ margin-top: 10px;}
 /*.wrapIt{ border: 2px solid red; border-radius: 5px;}
 .list-body{position: relative;height: 320px;overflow-y: scroll;}
 .user-list td:hover{cursor: pointer;}
 .user-name{color: blue;}
-.msg-list{position: relative;height: 470px;overflow-y: scroll;}
+
 .chat-list td{word-wrap;break-word;word-break:break-all;}
 .msg-name,
 .msg-time{ color: blue;}
 .msg-name{cursor: pointer;}
 .msg-wrap{margin-bottom: 8px;}*/
+
+.msg-list{position: relative;height: 470px;overflow-y: scroll;}
+
 .msg-content{ 
 	padding: 5px;
 	text-indent: 5em;
