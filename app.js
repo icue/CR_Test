@@ -13,7 +13,7 @@ var users = require('./routes/users');
 var app = express();
 
 global.db_handle = require('./database/db_handle');
-global.db = mongoose.connect("mongodb://localhost:27017/nodedb");
+global.db = mongoose.connect("mongodb://localhost:27017/chatroomDB");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
