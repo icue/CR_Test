@@ -11,10 +11,15 @@
 <body onload="showChatHistory()">
   <div class="container">
     <div class="row mt10">
-      <a type="button" class="btn btn-danger pull-right" href="/logout">Logout</a>
-    </div>
-    <div class="row mt10">
-      <div class="panel panel-default">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <table>
+            <tr>
+              <td class="panel-title big">Chatroom</td>
+              <td><a type="button" class="btn btn-danger btn-lg pull-right" href="/logout">Logout</a></td>
+            </tr>
+          </table>
+        </div>
         <div class="panel-body">
           <div class="msg-list" id="msg-list">
           </div>
@@ -23,9 +28,9 @@
     </div>
     <div class="input-group input-group-lg">
       <span class="input-group-addon" id="nickname"><span><%- user.name %></span>:</span>
-      <input type="text" class="form-control" id="msgIn" placeholder="Put message here" onkeydown="enterSend(event)">
+      <input type="text" class="form-control msg-input" id="msgIn" placeholder="Put message here" onkeydown="enterSend(event)">
       <span class="input-group-btn">
-        <button type="button"class="btn btn-primary " onclick="sendMyMessage()">
+        <button type="button"class="btn btn-primary btn-lg" onclick="sendMyMessage()">
           Send
         </button> 
       </span>
