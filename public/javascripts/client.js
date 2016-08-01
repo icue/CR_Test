@@ -1,25 +1,25 @@
 var socket = io.connect();
 
-function enterSend(event){    // enter  sendMessage
+function enterSend(event){    // press enter to directly send message
 	if(event.keyCode == 13){ 
 		sendMyMessage();
 	}
 }
 
-function sendMyMessage(){     // 发送消息 -- 处理
-	var content = $("#msgIn").val();   //获取消息框数据
+function sendMyMessage(){
+	var content = $("#msgIn").val();
 	if(content == ""){
 		return;
 	}
-	socket.emit("say",content);   // 正常群聊 给服务器提交数据 提供处理
-	$("#msgIn").val("");              //消息框置空
+	socket.emit("say",content);
+	$("#msgIn").val("");
 }
 
-function showChatMsgs(){     // 获取聊天记录
-   socket.emit("getChatList",$("#nickname span").html());     // 将用户名提交给服务器
+function showChatHistory(){
+   socket.emit("getChatHistory",$("#nickname span").html());
 }
 
-function msgAppend(msg_list,name,time,content){
+function msgAppend(msg_list,name,time,content){		//generate a msg box to display
 	msg_list.append("<div class='bubble-box'><table>"+
         "<tr>"+
           "<td class='bubble-name'>"+name+"</td>"+
@@ -37,7 +37,7 @@ function scrollbarToBottom(){
 	div.scrollTop = div.scrollHeight;
 }
 
-socket.on("getChatListDone",function(datas){   //从服务器获取聊天记录
+socket.on("getChatHistoryDone",function(datas){
 	var msg_list = $(".msg-list");
 	for(var i=0;i<datas.length;i++){ 
 		msgAppend(msg_list,datas[i].name,datas[i].time,datas[i].data);
@@ -45,22 +45,22 @@ socket.on("getChatListDone",function(datas){   //从服务器获取聊天记录
 	scrollbarToBottom();
 });
 
-socket.on("connect",function(){   // 进入聊天室
+socket.on("connect",function(){
 	var userName = $("#nickname span").html();
-	socket.send(userName);         // 向服务器发送自己的昵称
-	console.log("send userName to server completed");
+	socket.send(userName);
+	console.log("Username sent to server.");
 });
 
 socket.on("userStatus",function(data){
 	var msg_list = $(".msg-list");
 		msg_list.append(
-		'<div class="msg-wrap"><div class="bubble-box bubble-system">'+data+'</div></div>'
+		'<div class="bubble-box bubble-system">'+data+'</div>'
 	);
 	scrollbarToBottom();
 });
 
-socket.on("user_say",function(name,time,content){    // 获取用户的聊天信息并显示于面板
-	console.log("client:  "+name + "say :  "+content);
+socket.on("userSay",function(name,time,content){
+	console.log("[user]"+name + " [say]"+content);
 	msgAppend($(".msg-list"),name,time,content);
 	scrollbarToBottom();
 });

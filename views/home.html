@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1" >
-<title>Chatroom</title>
-<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="stylesheets/chat.css">
-<body onload="showChatMsgs()">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1" >
+  <title>Chatroom</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/chat.css">
+</head>
+<body onload="showChatHistory()">
   <div class="container">
     <div class="row mt10">
       <a type="button" class="btn btn-danger pull-right" href="/logout">Logout</a>
@@ -30,10 +31,9 @@
       </span>
     </div>
   </div>
-
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="javascripts/jquery.min.js"></script>
   <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="javascripts/client.js"></script>
-  </body>
+</body>
 </html>

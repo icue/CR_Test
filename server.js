@@ -1,17 +1,16 @@
 var server = require('socket.io')();
-var clients = new Array();  // 存储所有客户端 socket 和 name
+var clients = new Array();
 
-function addZeroToTime(t) { 
+function addZeroToTime(t){
 	return t<10 ? "0"+t : t;
 } 
 
-function getTime(){   // 获取时间格式
+function getTime(){
 	var date = new Date();
-	var time = addZeroToTime(date.getMonth()+1)+"/"+addZeroToTime(date.getDate())+"/"+date.getFullYear()+" "+addZeroToTime(date.getHours())+":"+addZeroToTime(date.getMinutes())+":"+addZeroToTime(date.getSeconds());
-	return time;
+	return addZeroToTime(date.getMonth()+1)+"/"+addZeroToTime(date.getDate())+"/"+date.getFullYear()+" "+addZeroToTime(date.getHours())+":"+addZeroToTime(date.getMinutes())+":"+addZeroToTime(date.getSeconds());
 }
 
-function storeContent(_name,_content,_time){       // 保存聊天记录
+function storeContent(_name,_content,_time){
 	var Content = global.db_handle.getModel('content');  
 	Content.create({ 
 		name: _name,
@@ -21,92 +20,71 @@ function storeContent(_name,_content,_time){       // 保存聊天记录
 		if(err){ 
 			console.log(err);
 		}else{ 
-			console.log("store content :  success ");
+			console.log("Content stored to database.");
 		}
 	});
 }
-				// 获取上线的用户
-// function getOnlineUser(ssocket){
-// var User = global.db_handle.getModel('user');  
-//        User.find({status: "online"},function(err,docs){ 
-//        	if(err){ 
-//        		console.log(err);
-//        	}else{ 
-//        		console.log('users list --default: '+docs);
-//        		// 因为是回调函数  socket.emit放在这里可以防止  用户更新列表滞后
-//        		ssocket.broadcast.emit('user_list',docs);   		//更新用户列表
-//        		ssocket.emit('user_list',docs);   		//更新用户列表
-      			
-//        	}
-//        });
-// }
 
-server.on('connection',function(socket){   // server listening
-	console.log('socket.id '+socket.id+ ':  connecting');  // console-- message
-    // getOnlineUser(socket);	//获取在线用户
-      
-					// 构造用户对象client
+server.on('connection',function(socket){
+	console.log('socket.id '+socket.id+ ' is connecting.');
+
 	var client = { 
 		Socket: socket,
-		name: '----'
+		name: 'unknown'
 	};
 
-	socket.on("message",function(name){ 
-			client.name = name;                    // 接收user name
-			clients.push(client);                     //保存此client
-			console.log("client-name:  "+client.name);
-			socket.broadcast.emit("userStatus","User "+client.name+" is now online.");
+	socket.on("message",function(uname){ 
+		client.name = uname;
+		clients.push(client);
+		console.log("clientname is "+client.name+".");
+		socket.broadcast.emit("userStatus","User "+client.name+" is now online!");
 	}); 
 
-	//广播客户传来的数据并处理
-	socket.on('say',function(content){         // 群聊阶段
-		console.log("server: "+client.name + "  say : " + content);
-		//置入数据库
+	socket.on('say',function(content){		//broadcast what the user says
+		console.log("[client]"+client.name + " [say]" + content);
 		var time = getTime();
-		socket.emit('user_say',client.name,time,content);
-		socket.broadcast.emit('user_say',client.name,time,content);
-		storeContent(client.name,content,time);   //保存聊天记录
+		socket.emit('userSay',client.name,time,content);
+		socket.broadcast.emit('userSay',client.name,time,content);
+		storeContent(client.name,content,time);
 	});
 
-	socket.on("getChatList",function(uname){    //获取客户端用户名并从数据库拉取 聊天记录
+	socket.on("getChatHistory",function(uname){
 		var Content =global.db_handle.getModel('content');
 		Content.find({},function(err,docs){ 
 			if(err){ 
 				console.log(err);
-			}else{     // 将docs 聊天记录返回给客户端处理
-				socket.emit("getChatListDone",docs);
-				console.log(uname+"  正在调取聊天记录");
-				//console.log(docs);
-				socket.emit("userStatus", "You're now online");
+			}else{
+				socket.emit("getChatHistoryDone",docs);
+				console.log(uname+" is fetching chat history.");
+				socket.emit("userStatus", "You're now online.");
 			}
 		});
 	});
 
-	socket.on('disconnect',function(){ 	  // Event:  disconnect
-		var Name = "";       
+	socket.on('disconnect',function(){
+		var nameLeft = "";       
 		for(var n in clients){                       
-			if(clients[n].Socket === socket){     // get socket match
-				Name = clients[n].name;
+			if(clients[n].Socket === socket){
+				statusOffline(clients[n].name);
+				break;
 			}
 		}
-		statusOffline(Name,socket);         // status  -->  set down
-		
 		socket.broadcast.emit('userStatus',"User "+client.name+" is now offline.");
-		console.log(client.name + ':   disconnect');
-
+		console.log(client.name + ' disconnected.');
 	});
 });
-function statusOffline(uname,ssocket){    //注销  下线处理
-	var User = global.db_handle.getModel('user');  
-	User.update({name:uname},{$set: {status: 'offline'}},function(err,doc){ 
+
+function statusOffline(uname){
+	var User = global.db_handle.getModel('user');
+	User.update({name:uname},{$set: {status: 'offline'}},function(err,doc){
 		if(err){ 
 			console.log(err);
 		}else{ 
 			console.log(uname+ " logged out.");
-			// getOnlineUser(ssocket);    // 放在内部保证顺序
 		}
 	});
 }
-exports.listen = function(charServer){    
-	return server.listen(charServer);    // listening 
+
+exports.listen = function(_server){    
+	return server.listen(_server);
 };
