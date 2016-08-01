@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    res.redirect('login');
+  //res.render('index', { title: 'Express' });
 });
 
 /* GET login page. */
@@ -72,7 +73,7 @@ router.get("/home",function(req,res){
 router.get("/logout",function(req,res){ 
     req.session.user = null;  //clean the current session
     req.session.error = null;
-    res.redirect("/");
+    res.redirect("login");
 });
 
 module.exports = router;
