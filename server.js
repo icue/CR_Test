@@ -7,7 +7,10 @@ function addZeroToTime(t){
 
 function getTime(){
 	var date = new Date();
-	return addZeroToTime(date.getMonth()+1)+"/"+addZeroToTime(date.getDate())+"/"+date.getFullYear()+" "+addZeroToTime(date.getHours())+":"+addZeroToTime(date.getMinutes())+":"+addZeroToTime(date.getSeconds());
+	var hr = date.getHours();
+	var ampm = hr<13 ? "AM" : "PM";
+	hr = addZeroToTime(hr<13 ? hr : hr-12);
+	return addZeroToTime(date.getMonth()+1)+"/"+addZeroToTime(date.getDate())+"/"+date.getFullYear()+" "+hr+":"+addZeroToTime(date.getMinutes())+ampm;
 }
 
 function storeContent(_name,_content,_time){
