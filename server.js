@@ -50,7 +50,7 @@ server.on('connection',function(socket){
 
 	socket.on("getChatHistory",function(uname){
 		var Content =global.db_handle.getModel('content');
-		Content.find({},function(err,docs){ 
+		Content.find({}).sort({'_id':1}).exec(function(err,docs){ 
 			if(err){ 
 				console.log(err);
 			}else{
