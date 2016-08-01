@@ -27,16 +27,17 @@ socket.on("getChatListDone",function(datas){   //从服务器获取聊天记录
 
 	var msg_list = $(".msg-list");
 	for(var i=0;i<datas.length;i++){ 
-		msg_list.append("<div class='bubble-box'><table>"+
-			        "<tr>"+
-			          "<td class='bubble-name'>"+datas[i].name+"</td>"+
-			          "<td class='bubble-time'>"+datas[i].time+"</td>"+
-			        "</tr>"+
-			        "<tr>"+
-			          "<td class='bubble-content' colspan='2'>"+datas[i].data+"</td>" +
-			        "</tr>"+
-			        "</table></div>"
-			);
+		msgAppend(msg_list,datas[i].name,datas[i].time,datas[i].data);
+		// msg_list.append("<div class='bubble-box'><table>"+
+		// 	        "<tr>"+
+		// 	          "<td class='bubble-name'>"+datas[i].name+"</td>"+
+		// 	          "<td class='bubble-time'>"+datas[i].time+"</td>"+
+		// 	        "</tr>"+
+		// 	        "<tr>"+
+		// 	          "<td class='bubble-content' colspan='2'>"+datas[i].data+"</td>" +
+		// 	        "</tr>"+
+		// 	        "</table></div>"
+		// 	);
 	}
 	// 	var hei = msg_list.height();
 	// msg_list.scrollTop(hei);
@@ -69,35 +70,20 @@ socket.on("system",function(data){
 	);
 });
 
-socket.on("user_list",function(userList){    // 获取用户列表并展示
-	$(".user-list").html("");
+// socket.on("user_list",function(userList){    // 获取用户列表并展示
+// 	$(".user-list").html("");
 
-	for(var i=0;i<userList.length;i++){ 
-		var sex = userList[i].sex, imgSrc;
-		if(sex === 'girl'){ 
-			imgSrc = "../images/girl.png";
-		}else if(sex === 'boy'){ 
-			imgSrc = "../images/boy.png";
-		}
-		$(".user-list").append("<tr class='row'><td class='col-sm-1'><img style='width:10px; height:20px;' src="+imgSrc+"></td><td class='col-sm-11 user-name' title='点此用户 可与其私聊哦~' onclick='toUser(this)'>"+userList[i].name+"</td></tr>");
-	}
-	var listCount = $(".user-list").find("tr").length;
-	$("#list-count").text("当前在线：" + listCount + "人");
-});
+// 	for(var i=0;i<userList.length;i++){ 
+// 		$(".user-list").append("<tr class='row'><td class='col-sm-1'><img style='width:10px; height:20px;' src="+imgSrc+"></td><td class='col-sm-11 user-name' title='点此用户 可与其私聊哦~' onclick='toUser(this)'>"+userList[i].name+"</td></tr>");
+// 	}
+// 	var listCount = $(".user-list").find("tr").length;
+// 	$("#list-count").text("当前在线：" + listCount + "人");
+// });
 
 socket.on("user_say",function(name,time,content){    // 获取用户的聊天信息并显示于面板
 	console.log("client:  "+name + "say :  "+content);
-	var msg_list = $(".msg-list");
-	msg_list.append("<div class='bubble-box'><table>"+
-	        "<tr>"+
-	          "<td class='bubble-name'>"+name+"</td>"+
-	          "<td class='bubble-time'>"+time+"</td>"+
-	        "</tr>"+
-	        "<tr>"+
-	          "<td class='bubble-content' colspan='2'>"+content+"</td>" +
-	        "</tr>"+
-	        "</table></div>"
-	);
+	//var msg_list = $(".msg-list");
+	msgAppend($(".msg-list"),name,time,content);
 	var div = document.getElementById("msg-list");
 	div.scrollTop = div.scrollHeight;
 	 //div.scrollTop = div.scrollHeight - div.clientHeight;
@@ -105,3 +91,16 @@ socket.on("user_say",function(name,time,content){    // 获取用户的聊天信
 	// var hei = div.offsetHeight();
  //     div.scrollTop(hei);
 });
+
+function msgAppend(msg_list,name,time,content){
+	msg_list.append("<div class='bubble-box'><table>"+
+        "<tr>"+
+          "<td class='bubble-name'>"+name+"</td>"+
+          "<td class='bubble-time'>"+time+"</td>"+
+        "</tr>"+
+        "<tr>"+
+          "<td class='bubble-content' colspan='2'>"+content+"</td>" +
+        "</tr>"+
+        "</table></div>"
+	);
+}
