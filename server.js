@@ -1,8 +1,13 @@
 var server = require('socket.io')();
 var clients = new Array();  // 存储所有客户端 socket 和 name
+
+function addZeroToTime(t) { 
+	return t<10 ? "0"+t : t;
+} 
+
 function getTime(){   // 获取时间格式
 	var date = new Date();
-	var time = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	var time = addZeroToTime(date.getMonth()+1)+"/"+addZeroToTime(date.getDate())+"/"+date.getFullYear()+" "+addZeroToTime(date.getHours())+":"+addZeroToTime(date.getMinutes())+":"+addZeroToTime(date.getSeconds());
 	return time;
 }
 
@@ -50,9 +55,8 @@ server.on('connection',function(socket){   // server listening
 			client.name = name;                    // 接收user name
 			clients.push(client);                     //保存此client
 			console.log("client-name:  "+client.name);
-			socket.broadcast.emit("userIn","system@: 【"+client.name+"】-- a newer ! Let's welcome him ~");
-	});
-	socket.emit("system","system@:  Welcome ! Now chat with others"); 
+			socket.broadcast.emit("userStatus","User "+client.name+" is now online.");
+	}); 
 
 	//广播客户传来的数据并处理
 	socket.on('say',function(content){         // 群聊阶段
@@ -64,7 +68,6 @@ server.on('connection',function(socket){   // server listening
 		storeContent(client.name,content,time);   //保存聊天记录
 	});
 
-
 	socket.on("getChatList",function(uname){    //获取客户端用户名并从数据库拉取 聊天记录
 		var Content =global.db_handle.getModel('content');
 		Content.find({},function(err,docs){ 
@@ -74,6 +77,7 @@ server.on('connection',function(socket){   // server listening
 				socket.emit("getChatListDone",docs);
 				console.log(uname+"  正在调取聊天记录");
 				//console.log(docs);
+				socket.emit("userStatus", "You're now online");
 			}
 		});
 	});
@@ -87,7 +91,7 @@ server.on('connection',function(socket){   // server listening
 		}
 		statusOffline(Name,socket);         // status  -->  set down
 		
-		socket.broadcast.emit('userOut',"system@: 【"+client.name+"】 leave ~");
+		socket.broadcast.emit('userStatus',"User "+client.name+" is now offline.");
 		console.log(client.name + ':   disconnect');
 
 	});

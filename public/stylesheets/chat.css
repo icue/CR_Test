@@ -37,17 +37,21 @@ table{
 
 .bubble-system{
 	width: 60%;
-	color: #FF8888;
+	border-radius: 8px;
+	background: #FFCCCC;
 	text-align:center;
 	font-family:"Times New Roman",sans-serif;
-	font-size: 10px;
+	font-size: 20px;
 	word-wrap: break-word;
+	margin-left: auto;
+	margin-right: auto;
 }
-
-.btn-logout{
-	margin-right: 0;
+.login{ 
+	text-align: center;
+	font-size: 20px;
+	font-weight: 600;
 }
-
+.btn-logout{ margin-right: 0;}
 .mt10{ margin-top: 10px;}
 /*.wrapIt{ border: 2px solid red; border-radius: 5px;}
 .list-body{position: relative;height: 320px;overflow-y: scroll;}
